@@ -6,9 +6,9 @@ import Lists.List._
 import scala.util.Random
 
 trait PowerIterator[A] {
-  def next(): Optionals.Option[A]
-  def allSoFar(): Lists.List[A]
-  def reversed(): PowerIterator[A]
+  def next():Optionals.Option[A]
+  def allSoFar():Lists.List[A]
+  def reversed():PowerIterator[A]
 }
 
 import Streams.Stream._
@@ -16,21 +16,21 @@ case class PowerIterators[A](private var stream:Streams.Stream[A]) extends Power
 
   private var passed:Lists.List[A] = nil
 
-  override def next(): Optionals.Option[A] = stream match {
+  override def next():Optionals.Option[A] = stream match {
     case Streams.Stream.Cons(h,t) => stream=t();passed=append(passed,Lists.List.Cons(h(),nil)); Some(h())
     case _ => Optionals.Option.empty
   }
 
-  override def allSoFar(): Lists.List[A] = Lists.List.map(passed)(x=>x)
+  override def allSoFar():Lists.List[A] = Lists.List.map(passed)(x=>x)
 
-  override def reversed(): PowerIterator[A] = PowerIterators(Streams.Stream.fromList[A](passed))
+  override def reversed():PowerIterator[A] = PowerIterators(Streams.Stream.fromList[A](passed))
 }
 
 trait PowerIteratorsFactory {
 
-  def incremental(start: Int, successive: Int => Int): PowerIterator[Int]
+  def incremental(start: Int, successive: Int => Int):PowerIterator[Int]
   def fromList[A](list: Lists.List[A]):PowerIterator[A]
-  def randomBooleans(size: Int): PowerIterator[Boolean]
+  def randomBooleans(size: Int):PowerIterator[Boolean]
 }
 
 class PowerIteratorsFactoryImpl extends PowerIteratorsFactory {

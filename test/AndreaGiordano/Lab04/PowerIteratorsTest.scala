@@ -21,11 +21,43 @@ class PowerIteratorsTest {
       pi.next(); // procedo in avanti per un po'..
     }
     assertEquals(Option.of(33), pi.next()); // sono arrivato a 33
-    val pi2 = factory.randomBooleans(10)
-    for (i <- 0 until 10){
-      print("i"+i+" :"+pi2.next())
+    val pi3 = factory.incremental(0,_+3)
+    for (_ <- 0 until 100){
+      pi3.next()
     }
-    println()
-    println(pi2.next())
+    assertEquals(Option.of(300), pi3.next())
+  }
+
+  @Test
+  def testFromList() {
+    import List._
+    val list:List[Int] = Cons(1,Cons(2,Cons(3,Cons(4,Cons(5,Cons(6,Cons(7,Nil())))))))
+    val pi4 = factory.fromList(list)
+    assertEquals(Option.of(1), pi4.next())
+    assertEquals(Option.of(2), pi4.next())
+    pi4.next();pi4.next();pi4.next()
+    assertEquals(Option.of(6), pi4.next())
+    pi4.next()
+    val pi6 = pi4.reversed()
+    assertEquals(Option.empty, pi4.next())
+    assertEquals(Option.of(7), pi6.next())
+    assertEquals(Option.of(6), pi6.next())
+    pi6.next();pi6.next();pi6.next()
+    assertEquals(Option.of(2), pi6.next())
+    assertEquals(Option.of(1), pi6.next())
+    assertEquals(Option.empty, pi6.next())
+  }
+
+  @Test
+  def testRandomBoolean() {
+    val pi2 = factory.randomBooleans(100)
+    val pi5 = factory.randomBooleans(100)
+    for (_ <- 0 until 100){
+      pi2.next()
+      pi5.next()
+    }
+    assertNotEquals(pi2.allSoFar(), pi5.allSoFar())
+    assertEquals(Option.empty, pi2.next())
+    assertEquals(Option.empty, pi5.next())
   }
 }
