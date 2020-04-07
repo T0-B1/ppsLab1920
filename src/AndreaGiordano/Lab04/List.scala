@@ -14,6 +14,13 @@ object Lists extends App {
 
     def nil[A]: List[A] = Nil() // smart constructor
 
+    def genList[A](elems:A*):List[A] = {
+      var l = nil[A]
+      for (e <- elems)
+        l = append(l,Cons(e,nil[A]))
+      l
+    }
+
     def sum(l: List[Int]): Int = l match {
       case Cons(h, t) => h + sum(t)
       case _ => 0
@@ -77,6 +84,20 @@ object Lists extends App {
     def length(l: List[_]): Int = ???
   }
 
+  object sameTeacher {
+    def unapply(list: List[Course]): Option[String] = {
+      def checkSameTeacher(list: List[Course],teacher:String):Option[String] = list match {
+        case List.Cons(h,t) => if (h.teacher==teacher) checkSameTeacher(t,teacher) else Option.empty
+        case _ => Option(teacher)
+      }
+      list match {
+        case List.Cons(h,t) => checkSameTeacher(t,h.teacher)
+        case _ => Option.empty
+      }
+    }
+  }
+
+  /*
   // Note "List." qualification
   println(List.sum(List.Cons(10, List.Cons(20, List.Cons(30, List.Nil()))))) // 60
   import List._
@@ -103,4 +124,25 @@ object Lists extends App {
   println(appendByFold(Cons(3,Cons(7,Nil())), Cons(1,Cons(5,Nil())))) // Cons(3,Cons(7,Cons(1,Cons(5, Nil()))))
   println(length(Nil())) // 0
   println(length(Cons(3,Cons(7,Cons(1,Cons(5, Nil())))))) // 4
+  */
+
+  //test genList
+  import List._
+  val l = genList(1,2,3,4,5,6)
+  println(l)
+
+  val c1 = Course("C1","Viroli")
+  val c2 = Course("C2","Viroli")
+  val c3 = Course("C3","Viroli")
+  val c4 = Course("C4","Viroli")
+  val c5 = Course("C5","Ricci")
+  val c6 = Course("C6","Omicini")
+  val c7 = Course("C7","Bravetti")
+  val cListEq = genList(c1,c2,c3,c4)
+  val cListNotEq = genList(c4,c5,c6,c7)
+  val testList = cListEq
+  testList match {
+    case sameTeacher(t) => println ( s"$testList have same teacher $t")
+    case _ => println("NOPE")
+  }
 }
