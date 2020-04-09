@@ -1,4 +1,4 @@
-package alessandro.u02
+package AlessandroMartignano.u02
 
 object ex7 extends App {
 

@@ -1,4 +1,4 @@
-package alessandro.u03
+package AlessandroMartignano.u03
 
 import source.u02.Modules.Person
 import source.u02.Modules.Person.{Student, Teacher}
