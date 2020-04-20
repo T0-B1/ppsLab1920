@@ -1,4 +1,4 @@
-package u05lab.code
+package AlessiaCerami.u05
 
 object Kind extends Enumeration {
   val RETIRED, FAILED, SUCCEEDED = Value
